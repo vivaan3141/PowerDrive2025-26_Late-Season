@@ -23,10 +23,9 @@ extern vex::motor_group RightDrive;
 extern vex::smartdrive Drivetrain;
 
 extern vex::motor low;
-extern vex::motor high;
-extern vex::motor storage;
-
-
+extern vex::motor bigbig;
+extern vex::motor smallsmall;
+extern vex::motor_group high;
 
 extern vex::inertial InertialSensor;
 

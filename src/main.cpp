@@ -4,7 +4,6 @@
 // January 10. Autonomous change for Jan 10
 #include "vex.h"
 #include "robot-config.h"
-#include "PID.h"
 #include "functions.h"
 #include <iostream>
 #include <string>
@@ -14,13 +13,10 @@
 using namespace vex;
 competition Competition;
 
-
 bool stateLoader=false;
 bool stateDescore=false;
 
-double distance(){
-  return gap.objectDistance(inches);
-}
+double distance(){ return gap.objectDistance(inches); }
 
 void driveUntilTarget(double distance, double speed) {
   double targetDistRaw=(gap.objectDistance(inches))-(distance); // this gives the og target 
@@ -79,7 +75,6 @@ void setSpeedAuton(){
     Descore.set(false);
     low.setVelocity(150, rpm);
     high.setVelocity(200, rpm);
-    storage.setVelocity(200, rpm);
 }
 
 void loadLoop(int loop, double dist, double time){
@@ -89,68 +84,100 @@ void loadLoop(int loop, double dist, double time){
     Drivetrain.driveFor((0-dist),inches);
   }
 }
-
-
+  
 void autonCodes(int x) {
   if (x==1){
-    // Auton code 1#, Long Goal 3 Blocks. Side: 
-  Controller.Screen.print("V67");
-   /// Long Goal 1
-   Loader.set(false);
-   Drivetrain.setDriveVelocity(15, percent);
-   low.setVelocity(150, rpm);
-   high.setVelocity(200, rpm);
-   storage.setVelocity(200, rpm);
-//A
-   Drivetrain.driveFor(32.5,inches);
-       Loader.set(true);
-   Drivetrain.turnToHeading(90, degrees);
-   // wait(0.75, sec);
-   storage.spin(forward);
-   Drivetrain.setDriveVelocity(10, percent);
-   Drivetrain.setTurnVelocity(8, percent);
-   Drivetrain.setTurnConstant(0.6);
-
-
-   Drivetrain.driveFor(10,inches);
-//Takes out
-   low.spin(forward);
-   Drivetrain.driveFor(2.5,inches);
-
-
-   Drivetrain.driveFor(-1.5,inches);
-   wait(0.1, sec);
+  low.setVelocity(200, rpm);
+  high.setVelocity(200, rpm);
+  Drivetrain.setTurnVelocity(8, percent);
+  Drivetrain.setTurnConstant(0.6);
   
-   Drivetrain.driveFor(1.5,inches);
-   wait(0.1, sec);
-   Drivetrain.driveFor(-1.5,inches);
-
-
-   Drivetrain.driveFor(0.5,inches);
-   wait(0.1, sec);
-   Drivetrain.driveFor(-0.5,inches);
-
-
-   wait(0.1, sec);
-   Drivetrain.driveFor(-6,inches);
-   Loader.set(false);
-   Drivetrain.setDriveVelocity(20, percent);
-
-   // GO to long Goal  
-   Drivetrain.driveFor(-18,inches);
-   storage.stop();
-   low.stop();
+  Drivetrain.driveFor(8,inches);
+  Drivetrain.turnToHeading(90,degrees);
+  low.spin(forward);
+   //Make turns
    Drivetrain.setDriveVelocity(10, percent);
-
-
-   Drivetrain.driveFor(-3,inches);
-
-
- //Scores in goal 1 Note: Will need to change based on motors
-   high.spin(forward);
-   storage.spin(reverse);
+   Drivetrain.driveFor(31,inches);
+   Drivetrain.turnToHeading(130,degrees);
+   wait(1, sec);
+   Drivetrain.setDriveVelocity(10, percent);
+  
+   Drivetrain.driveFor(17.7,inches);
+   wait(0.5, sec);
+  
+   high.spin(reverse);
    low.spin(forward);
+   wait(5, sec);
+   high.stop();
+   low.stop();
 
+}if (x==2){
+// Low Goal Match
+    low.setVelocity(200, rpm);
+    high.setVelocity(200, rpm);
+    Drivetrain.setDriveVelocity(80, percent);
+    Drivetrain.setTurnVelocity(8, percent);
+    Drivetrain.setTurnConstant(0.6);
+
+    Drivetrain.driveFor(8,inches);
+    Drivetrain.turnToHeading(-90,degrees);
+    low.spin(forward);
+
+    Drivetrain.setDriveVelocity(10, percent);
+    Drivetrain.driveFor(31,inches);
+    Drivetrain.turnToHeading(-130,degrees);
+
+    Drivetrain.setDriveVelocity(10, percent);
+    Drivetrain.setDriveVelocity(10, percent);
+    Drivetrain.driveFor(16.1,inches);
+    wait(0.5, sec);
+    high.spin(reverse);
+    low.spin(reverse);
+    wait(5, sec);
+    high.stop();
+    low.stop();
+
+}if (x==3){
+    // Scores 1 block on long goal and parks
+    Drivetrain.setDriveVelocity(60, percent);
+    low.setVelocity(200, rpm); high.setVelocity(200, rpm);
+
+    Drivetrain.driveFor(31,inches);
+    Drivetrain.turnToHeading(-90,degrees);
+
+    wait(1, sec);
+    Drivetrain.driveFor(24,inches);
+    wait(0.5, sec);
+
+    high.spin(forward);
+    low.spin(forward);
+    wait(3, sec);
+    high.stop();
+    low.stop();
+}if (x==4){
+  low.setVelocity(200, rpm);
+  high.setVelocity(200, rpm);
+  Drivetrain.setTurnVelocity(8, percent);
+  Drivetrain.setTurnConstant(0.6);
+  
+  Drivetrain.driveFor(8,inches);
+  Drivetrain.turnToHeading(90,degrees);
+  low.spin(forward);
+   //Make turns
+   Drivetrain.setDriveVelocity(10, percent);
+   Drivetrain.driveFor(31,inches);
+   Drivetrain.turnToHeading(130,degrees);
+   wait(1, sec);
+   Drivetrain.setDriveVelocity(10, percent);
+  
+   Drivetrain.driveFor(17.7,inches);
+   wait(0.5, sec);
+  
+   high.spin(reverse);
+   low.spin(forward);
+   wait(5, sec);
+   high.stop();
+   low.stop();
 }
 }
 
@@ -186,8 +213,6 @@ void intake(){
   low.spin(forward);
   Controller.Screen.print("Intake");
 }
-
-
 
 void longGoal(){
   Controller.Screen.clearLine();
@@ -226,8 +251,6 @@ void reverseIntakeRELEASED(){
   low.stop();
   high.stop();
 }
-
-
 
 void middleGoalRELEASED(){
   Controller.Screen.clearLine();
@@ -279,18 +302,10 @@ void descoreTest(){
 
 
 
-
-void PID(){
-  drivePID(24,0.1,0.05,-0.1);
-}
-
 void usercontrol(void) {
   high.setVelocity(200, rpm);
   low.setVelocity(200, rpm);
-  storage.setVelocity(200, rpm);
 
-  Controller.ButtonA.pressed(reverseIntake);
-  Controller.ButtonA.released(reverseIntakeRELEASED);
 
   Controller.ButtonR1.pressed(middleGoal);
   Controller.ButtonR1.released(middleGoalRELEASED);
@@ -301,13 +316,14 @@ void usercontrol(void) {
   Controller.ButtonL1.pressed(intake);
   Controller.ButtonL1.released(intakeRELEASED);
 
+  Controller.ButtonL2.pressed(reverseIntake);
+  Controller.ButtonL2.released(reverseIntakeRELEASED);
 
 
 
   // Pneumatics
   Controller.ButtonUp.pressed(load);
   Controller.ButtonB.pressed(descore);
-  Controller.ButtonX.pressed(PID);
 
   while (true) {
     // ========== DRIVE CONTROL ========== //
