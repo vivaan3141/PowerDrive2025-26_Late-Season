@@ -16,60 +16,6 @@ using namespace vex;
 competition Competition;
 
 
-double distance(){ return gap.objectDistance(inches); }
-
-void driveUntilTarget(double distance, double speed) {
-  double targetDistRaw=(gap.objectDistance(inches))-(distance); // this gives the og target 
-  double targetDist = std::round(targetDistRaw * 10.0) / 10.0; // this supposed to round so there no oscillation
-  double driveSpeed=speed; // for reducing speed??
-  Drivetrain.setDriveVelocity(speed, percent);
-
-  while (targetDist!=distance){ // this logic supposed to make it go to accurate number
-    // driveSpeed=driveSpeed-1;
-    // Drivetrain.setDriveVelocity(driveSpeed, percent); 
-    // THIS LOGIC-  supposed to reduce speed when its close, not done, so im not doing it yet
-
-    if (targetDist>distance){
-      Drivetrain.drive(forward);
-      targetDist=gap.objectDistance(inches)-(distance);
-  }else if(targetDist<distance){
-      Drivetrain.drive(reverse);
-      targetDist=gap.objectDistance(inches)-(distance);
-    }
-  }
-  Drivetrain.stop();
-}
-
-void driveToDist(double distance, double speed){
-double targetDistRaw=gap.objectDistance(inches); // this gives the og target 
-  double targetDist = std::round(targetDistRaw * 10.0) / 10.0; // this supposed to round so there no oscillation
-  double driveSpeed=speed; // for reducing speed??
-  double distR=std::round(distance * 10.0) / 10.0;
-  Drivetrain.setDriveVelocity(speed, percent);
-  
-  while (targetDist!=distR){ // this logic supposed to make it go to accurate number
-    // driveSpeed=driveSpeed-1;
-    // Drivetrain.setDriveVelocity(driveSpeed, percent); 
-    // THIS LOGIC-  supposed to reduce speed when its close, not done, so im not doing it yet
-    if (targetDist>distR){
-      Drivetrain.drive(forward);
-      targetDist=gap.objectDistance(inches)-(distance);
-  }else if(targetDist<distR){
-      Drivetrain.drive(reverse);
-      targetDist=gap.objectDistance(inches)-(distance);
-    }
-  }
-  Drivetrain.stop();
-  }
-
-void turn(int deg, std::string dir){
-  if (dir == "left" or "l"){
-    Drivetrain.turnToHeading(deg,degrees);
-  }else if (dir == "right" or "r"){
-    Drivetrain.turnToHeading((0-deg),degrees);
-  }
-}
-
 void setSpeedAuton(){
     Loader.set(false);
     Descore.set(false);
@@ -216,9 +162,6 @@ void usercontrol(void) {
 
   Controller.ButtonL2.pressed(reverseIntake);
   Controller.ButtonL2.released(reverseIntakeRELEASED);
-
-
-
   // Pneumatics
   Controller.ButtonUp.pressed(load);
   Controller.ButtonB.pressed(descore);
