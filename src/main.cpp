@@ -5,7 +5,6 @@
 #include "vex.h"
 #include "robot-config.h"
 #include "functions.h"
-#include "controls.cpp"
 
 #include <iostream>
 #include <string>
@@ -39,16 +38,16 @@ void autonCodes(int x) {
   Drivetrain.setTurnConstant(0.6);
   
   Drivetrain.driveFor(8,inches);
-  Drivetrain.turnToHeading(90,degrees);
+  Drivetrain.turnToHeading(-90,degrees);
   low.spin(forward);
    //Make turns
    Drivetrain.setDriveVelocity(10, percent);
    Drivetrain.driveFor(31,inches);
-   Drivetrain.turnToHeading(130,degrees);
+   Drivetrain.turnToHeading(45,degrees);
    wait(1, sec);
    Drivetrain.setDriveVelocity(10, percent);
   
-   Drivetrain.driveFor(17.7,inches);
+   Drivetrain.driveFor(-17.7,inches);
    wait(0.5, sec);
   
    high.spin(reverse);
@@ -66,25 +65,25 @@ void autonCodes(int x) {
     Drivetrain.setTurnConstant(0.6);
 
     Drivetrain.driveFor(8,inches);
-    Drivetrain.turnToHeading(-90,degrees);
+    Drivetrain.turnToHeading(90,degrees);
     low.spin(forward);
 
     Drivetrain.setDriveVelocity(10, percent);
     Drivetrain.driveFor(31,inches);
-    Drivetrain.turnToHeading(-130,degrees);
+    Drivetrain.turnToHeading(130,degrees);
 
     Drivetrain.setDriveVelocity(10, percent);
     Drivetrain.setDriveVelocity(10, percent);
     Drivetrain.driveFor(16.1,inches);
     wait(0.5, sec);
     high.spin(reverse);
-    low.spin(reverse);
+    low.spin(forward);
     wait(5, sec);
     high.stop();
     low.stop();
 
 }if (x==3){
-    // Scores 1 block on long goal and parks
+    // Scores 1 block on long goal 
     Drivetrain.setDriveVelocity(60, percent);
     low.setVelocity(200, rpm); high.setVelocity(200, rpm);
 
@@ -144,6 +143,108 @@ void autonomous() {
   autonCodes(8);
 }
  
+bool stateLoader=false;
+bool stateDescore=false;
+ 
+void reverseIntake(){
+  low.spin(reverse);
+  high.spin(reverse);
+}
+
+void middleGoal(){
+  low.spin(forward);
+  high.spin(reverse);
+  Controller.Screen.print("Middle Goal");
+}
+
+void intake(){
+  low.spin(forward);
+  Controller.Screen.print("Intake");
+}
+
+void longGoal(){
+  Controller.Screen.clearLine();
+
+  high.spin(forward); // Score long, moves all stages
+  low.spin(forward);
+
+  Controller.Screen.print("LONG GOAL");
+}
+void loadOut(){
+  Controller.Screen.clearLine();
+
+  Controller.Screen.print("Loading"); 
+  Loader.set(true);
+}
+
+void loadRest(){
+  Controller.Screen.clearLine();
+  Loader.set(false);
+}
+
+void descoreOut(){
+  Controller.Screen.clearLine();
+
+  Descore.set(true);
+}
+
+void descoreIn(){
+  Controller.Screen.clearLine();
+  Descore.set(false);
+}
+void reverseIntakeRELEASED(){
+  Controller.Screen.clearLine();
+
+  low.stop();
+  high.stop();
+}
+
+void middleGoalRELEASED(){
+  Controller.Screen.clearLine();
+  low.stop();
+  high.stop();
+}
+
+void longGoalRELEASED(){
+  Controller.Screen.clearLine();
+
+  high.stop();
+  low.stop();
+}
+
+void intakeRELEASED(){
+  Controller.Screen.clearLine();
+
+  high.stop();
+  low.stop();
+}
+
+
+void load(){
+  if (stateLoader==true){
+    loadOut();
+    stateLoader=false; // Happy :)
+  }else {
+    loadRest();
+    stateLoader=true;
+  }
+}
+
+void descore(){
+  if (stateDescore==true){
+    descoreOut();
+    stateDescore=false; // Happy :)
+  }else {
+    descoreIn();
+    stateDescore=true;
+  }
+}
+
+void descoreTest(){
+  Descore.set(true);
+  wait(1,sec);
+    Descore.set(false);
+}
 
 
 void usercontrol(void) {
@@ -163,8 +264,8 @@ void usercontrol(void) {
   Controller.ButtonL2.pressed(reverseIntake);
   Controller.ButtonL2.released(reverseIntakeRELEASED);
   // Pneumatics
-  Controller.ButtonUp.pressed(load);
-  Controller.ButtonB.pressed(descore);
+  // Controller.ButtonUp.pressed(load);
+  Controller.ButtonA.pressed(descore);
 
   while (true) {
     // ========== DRIVE CONTROL ========== //

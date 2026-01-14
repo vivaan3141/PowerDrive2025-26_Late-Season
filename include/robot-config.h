@@ -8,7 +8,7 @@ extern vex::brain Brain;
 extern vex::controller Controller;
 extern vex::competition Competition;
 
-//TODO: group into drivetrain
+// Drivetrain
 
 extern vex::motor LB;
 extern vex::motor LM;
@@ -22,15 +22,15 @@ extern vex::motor_group RightDrive;
 
 extern vex::smartdrive Drivetrain;
 
-extern vex::motor low;
-extern vex::motor bigbig;
-extern vex::motor smallsmall;
-extern vex::motor_group high;
+extern vex::motor high;
+extern vex::motor bigScore;
+extern vex::motor smallScore;
+extern vex::motor_group low;
 
 extern vex::inertial InertialSensor;
 
 
-extern vex::distance gap;
+// extern vex::distance gap;
 
 
 extern vex::digital_out Loader;
