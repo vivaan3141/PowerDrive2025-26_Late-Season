@@ -1,4 +1,4 @@
-# Team 13777X – Push Back (2025–2026) Season
+## Team 13777X – Push Back (2025–2026) Season
 
 This repository contains the complete programming for **VEX Robotics Team 13777X** during the **2025–2026 Push Back** season. 
 The code is designed to increase efficiency, consistency, and scoring in both autonomous and driver-controlled periods.
