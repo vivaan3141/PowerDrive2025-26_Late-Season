@@ -32,26 +32,32 @@ void loadLoop(int loop, double dist, double time){
   
 void autonCodes(int x) {
   if (x==1){
+    Drivetrain.setStopping(hold);
   low.setVelocity(200, rpm);
   high.setVelocity(200, rpm);
   Drivetrain.setTurnVelocity(8, percent);
-  Drivetrain.setTurnConstant(0.6);
+  // Drivetrain.setTurnConstant(0.6);
   
   Drivetrain.driveFor(8,inches);
-  Drivetrain.turnToHeading(-90,degrees);
-  low.spin(forward);
+  Drivetrain.turnToHeading(90,degrees);
+  low.spin(reverse);
    //Make turns
    Drivetrain.setDriveVelocity(10, percent);
    Drivetrain.driveFor(31,inches);
-   Drivetrain.turnToHeading(45,degrees);
+     Drivetrain.turnToHeading(90,degrees);
+      Drivetrain.driveFor(-1,inches);
+
+   Drivetrain.turnToHeading(-45,degrees);
+    low.stop();
    wait(1, sec);
+
    Drivetrain.setDriveVelocity(10, percent);
   
-   Drivetrain.driveFor(-17.7,inches);
+   Drivetrain.driveFor(-14.5,inches);
    wait(0.5, sec);
   
    high.spin(reverse);
-   low.spin(forward);
+   low.spin(reverse);
    wait(5, sec);
    high.stop();
    low.stop();
@@ -71,12 +77,13 @@ void autonCodes(int x) {
     Drivetrain.setDriveVelocity(10, percent);
     Drivetrain.driveFor(31,inches);
     Drivetrain.turnToHeading(130,degrees);
-
+    low.stop();
     Drivetrain.setDriveVelocity(10, percent);
     Drivetrain.setDriveVelocity(10, percent);
     Drivetrain.driveFor(16.1,inches);
     wait(0.5, sec);
-    high.spin(reverse);
+
+    high.spin(forward);
     low.spin(forward);
     wait(5, sec);
     high.stop();
@@ -135,12 +142,13 @@ void pre_auton(void) {
   while(InertialSensor.isCalibrating()){
     Brain.Screen.print("Inertial Calibrating"); wait(5, sec);
   }
+  Brain.Screen.print("Inertial Calibrated!"); wait(5, sec);
 }
 // USER CONTROLS
 
 void autonomous() {
   Drivetrain.setStopping(hold);
-  autonCodes(8);
+  autonCodes(1);
 }
  
 bool stateLoader=false;

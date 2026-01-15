@@ -17,16 +17,16 @@ vex::motor_group RightDrive(RF, RM, RB);
 
 vex::inertial InertialSensor(vex::PORT1);
 
-vex::smartdrive Drivetrain = smartdrive(LeftDrive, RightDrive, InertialSensor, 279.5, 311.5, 254, mm, 0.6);
+vex::smartdrive Drivetrain = smartdrive(LeftDrive, RightDrive, InertialSensor, 279.5, 291.2, 266.7, mm, 0.75);
 
-vex::motor high (vex::PORT17,vex::gearSetting::ratio6_1); //Intake low
-vex::motor bigScore (vex::PORT21,vex::gearSetting::ratio6_1, true); //Intake high
-vex::motor smallScore (vex::PORT9,vex::gearSetting::ratio6_1, false); //Intake high
+vex::motor high (vex::PORT17,vex::gearSetting::ratio18_1); //Intake low
+vex::motor bigScore (vex::PORT21,vex::gearSetting::ratio18_1, true); //Intake high
+vex::motor smallScore (vex::PORT9,vex::gearSetting::ratio18_1, false); //Intake high
 
 vex::motor_group low(bigScore, smallScore);
 
 
-// vex::digital_out Loader (Brain.ThreeWirePort.A);
+vex::digital_out Loader (Brain.ThreeWirePort.G);
 
 vex::digital_out Descore (Brain.ThreeWirePort.A);
 
@@ -36,8 +36,8 @@ void vexcodeInit() {
   InertialSensor.calibrate();
   // DoubleActingPiston.set(false); // retracted
   // SingleActingPiston.set(false); // off
-  while (InertialSensor.isCalibrating()) {
-    vex::task::sleep(100);
-    std::cout<<"Calibrate";
+  while (InertialSensor.isCalibrating()==true) {
+    task::sleep(100);
+    std::cout<<"Calibrating";
   }
 }
