@@ -26,9 +26,9 @@ vex::motor smallScore (vex::PORT9,vex::gearSetting::ratio6_1, false); //Intake h
 vex::motor_group low(bigScore, smallScore);
 
 
-vex::digital_out Loader (Brain.ThreeWirePort.A);
+// vex::digital_out Loader (Brain.ThreeWirePort.A);
 
-vex::digital_out Descore (Brain.ThreeWirePort.G);
+vex::digital_out Descore (Brain.ThreeWirePort.A);
 
 // distance gap = distance(PORT2); // Change the port!
 
