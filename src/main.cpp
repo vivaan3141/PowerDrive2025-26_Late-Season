@@ -15,12 +15,12 @@ using namespace vex;
 competition Competition;
 
 
-void setSpeedAuton(){
-    Loader.set(false);
-    Descore.set(false);
-    low.setVelocity(150, rpm);
-    high.setVelocity(200, rpm);
-}
+// void setSpeedAuton(){
+//     Loader.set(false);
+//     Descore.set(false);
+//     low.setVelocity(150, rpm);
+//     high.setVelocity(200, rpm);
+// }
 
 void loadLoop(int loop, double dist, double time){
   for (int i=0; i<loop; i++){
@@ -32,26 +32,29 @@ void loadLoop(int loop, double dist, double time){
   
 void autonCodes(int x) {
   if (x==1){
-    Drivetrain.setStopping(hold);
-  low.setVelocity(200, rpm);
-  high.setVelocity(200, rpm);
+  Brain.Screen.print(" - V23");
+  Drivetrain.setStopping(hold);
+  low.setVelocity(75, percent);
+  high.setVelocity(75, percent);
   Drivetrain.setTurnVelocity(8, percent);
-  // Drivetrain.setTurnConstant(0.6);
-  
+  Drivetrain.setTurnConstant(0.6);
+  Drivetrain.setTurnThreshold(1);
+
   Drivetrain.driveFor(8,inches);
   Drivetrain.turnToHeading(90,degrees);
   low.spin(reverse);
    //Make turns
    Drivetrain.setDriveVelocity(10, percent);
-   Drivetrain.driveFor(31,inches);
-     Drivetrain.turnToHeading(90,degrees);
-      Drivetrain.driveFor(-1,inches);
+   Drivetrain.driveFor(31.5,inches);
+   Drivetrain.turnToHeading(90,degrees);
+  // Drivetrain.driveFor(-1,inches);
 
-   Drivetrain.turnToHeading(-45,degrees);
-    low.stop();
-   wait(1, sec);
-
-   Drivetrain.setDriveVelocity(10, percent);
+  low.stop();
+  low.setVelocity(100, percent);
+  high.setVelocity(100, percent);
+  Drivetrain.turnToHeading(-45,degrees);
+  wait(1, sec);
+  Drivetrain.setDriveVelocity(10, percent);
   
    Drivetrain.driveFor(-14.5,inches);
    wait(0.5, sec);
@@ -90,15 +93,33 @@ void autonCodes(int x) {
     low.stop();
 
 }if (x==3){
-    // Scores 1 block on long goal 
-    Drivetrain.setDriveVelocity(60, percent);
-    low.setVelocity(200, rpm); high.setVelocity(200, rpm);
+    // Scores 1 block on long goal
+  Brain.Screen.print(" - V23");
+  Drivetrain.setStopping(hold);
+  low.setVelocity(75, percent);
+  high.setVelocity(75, percent);
+  Drivetrain.setTurnVelocity(8, percent);
+  Drivetrain.setTurnConstant(0.6);
+  Drivetrain.setTurnThreshold(1);
 
-    Drivetrain.driveFor(31,inches);
-    Drivetrain.turnToHeading(-90,degrees);
+  Drivetrain.driveFor(8,inches);
+  Drivetrain.turnToHeading(-90,degrees);
+  low.spin(reverse);
+   //Make turns
+   Drivetrain.setDriveVelocity(10, percent);
+   Drivetrain.driveFor(31.5,inches);
+   Drivetrain.turnToHeading(-135,degrees);
+  // Drivetrain.driveFor(-1,inches);
+  low.stop();
+    Drivetrain.driveFor(28,inches);
+        wait(0.5, sec);
+  Drivetrain.turnToHeading(90,degrees);
 
+  low.setVelocity(100, percent);
+  high.setVelocity(100, percent);
+
+    Drivetrain.driveFor(-20,inches);
     wait(1, sec);
-    Drivetrain.driveFor(24,inches);
     wait(0.5, sec);
 
     high.spin(forward);
@@ -135,10 +156,11 @@ void autonCodes(int x) {
 
 // Pre-Autonomous
 void pre_auton(void) {
-  Loader.set(false);
+  Descore.set(true);
   vexcodeInit();
   InertialSensor.calibrate();  // Start calibration. Print that the Inertial Sensor is calibrating
-  low.setVelocity(200, rpm); high.setVelocity(200, rpm);
+  low.setVelocity(600, rpm); 
+  high.setVelocity(600, rpm);
   while(InertialSensor.isCalibrating()){
     Brain.Screen.print("Inertial Calibrating"); wait(5, sec);
   }
@@ -148,34 +170,33 @@ void pre_auton(void) {
 
 void autonomous() {
   Drivetrain.setStopping(hold);
-  autonCodes(1);
+  autonCodes(3);
 }
  
 bool stateLoader=false;
-bool stateDescore=false;
+bool stateDescore=true;
  
 void reverseIntake(){
-  low.spin(reverse);
-  high.spin(reverse);
+  low.spin(forward);
+  high.stop();
 }
 
 void middleGoal(){
-  low.spin(forward);
+  low.spin(reverse);
   high.spin(reverse);
   Controller.Screen.print("Middle Goal");
 }
 
 void intake(){
-  low.spin(forward);
+  low.spin(reverse);
+  high.stop();
   Controller.Screen.print("Intake");
 }
 
 void longGoal(){
   Controller.Screen.clearLine();
-
   high.spin(forward); // Score long, moves all stages
-  low.spin(forward);
-
+  low.spin(reverse);
   Controller.Screen.print("LONG GOAL");
 }
 void loadOut(){
@@ -192,7 +213,6 @@ void loadRest(){
 
 void descoreOut(){
   Controller.Screen.clearLine();
-
   Descore.set(true);
 }
 
@@ -256,8 +276,8 @@ void descoreTest(){
 
 
 void usercontrol(void) {
-  high.setVelocity(200, rpm);
-  low.setVelocity(200, rpm);
+  high.setVelocity(600, rpm);
+  low.setVelocity(600, rpm);
 
 
   Controller.ButtonR1.pressed(middleGoal);
@@ -266,14 +286,14 @@ void usercontrol(void) {
   Controller.ButtonR2.pressed(longGoal);
   Controller.ButtonR2.released(longGoalRELEASED);
 
-  Controller.ButtonL1.pressed(intake);
-  Controller.ButtonL1.released(intakeRELEASED);
+  Controller.ButtonL2.pressed(intake);
+  Controller.ButtonL2.released(intakeRELEASED);
 
-  Controller.ButtonL2.pressed(reverseIntake);
-  Controller.ButtonL2.released(reverseIntakeRELEASED);
+  Controller.ButtonA.pressed(reverseIntake);
+  Controller.ButtonA.released(reverseIntakeRELEASED);
   // Pneumatics
   // Controller.ButtonUp.pressed(load);
-  Controller.ButtonA.pressed(descore);
+  Controller.ButtonY.pressed(descore);
 
   while (true) {
     // ========== DRIVE CONTROL ========== //
@@ -285,8 +305,8 @@ void usercontrol(void) {
     double leftPower  = fwd + turn;
     double rightPower = fwd - turn;
 
-    spinLeftDT(leftPower * 0.7);
-    spinRightDT(rightPower * 0.7);
+    spinLeftDT(leftPower * 1);
+    spinRightDT(rightPower * 1);
   
     wait(20, msec);
   }
