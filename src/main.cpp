@@ -152,7 +152,7 @@ void autonCodes(int x) {
    Drivetrain.turnToHeading(130,degrees);
    wait(1, sec);
    Drivetrain.setDriveVelocity(10, percent);
-  
+    Drivetrain.turnToHeading(130,degrees);
    Drivetrain.driveFor(17.7,inches);
    wait(0.5, sec);
   
@@ -200,14 +200,25 @@ void autonCodes(int x) {
   Drivetrain.turnToHeading(90,degrees);
 
   Drivetrain.driveFor(-15,inches);
+    Drivetrain.turnToHeading(90,degrees);
+
 
   Drivetrain.turnToHeading(0,degrees);
 
-  Drivetrain.driveFor(-16,inches);
+  Drivetrain.driveFor(-25,inches);
 
-  Drivetrain.turnToHeading(90,degrees);
+  Drivetrain.turnToHeading(-90,degrees);
 
-  Drivetrain.driveFor(-30,inches);
+   Drivetrain.setDriveVelocity(20, percent);
+
+    Drivetrain.driveFor(35,inches);
+  wait(1, seconds);
+  
+    Drivetrain.setDriveVelocity(10, percent);
+
+  Drivetrain.driveFor(5,inches);
+
+
 
 }
 }
@@ -228,7 +239,7 @@ void pre_auton(void) {
 void autonomous() {
   Drivetrain.setStopping(hold);
     Descore.set(true);
-  autonCodes(5);
+  autonCodes(2);
 }
  
 bool stateLoader=false;
