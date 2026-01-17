@@ -67,34 +67,9 @@ void autonCodes(int x) {
 
 }if (x==2){
 // Low Goal Match
-    low.setVelocity(200, rpm);
-    high.setVelocity(200, rpm);
-    Drivetrain.setDriveVelocity(80, percent);
-    Drivetrain.setTurnVelocity(8, percent);
-    Drivetrain.setTurnConstant(0.6);
+    Brain.Screen.print(" - V25");
+  Controller.Screen.print(" - V25");
 
-    Drivetrain.driveFor(8,inches);
-    Drivetrain.turnToHeading(90,degrees);
-    low.spin(forward);
-
-    Drivetrain.setDriveVelocity(10, percent);
-    Drivetrain.driveFor(31,inches);
-    Drivetrain.turnToHeading(130,degrees);
-    low.stop();
-    Drivetrain.setDriveVelocity(10, percent);
-    Drivetrain.setDriveVelocity(10, percent);
-    Drivetrain.driveFor(16.1,inches);
-    wait(0.5, sec);
-
-    high.spin(forward);
-    low.spin(forward);
-    wait(5, sec);
-    high.stop();
-    low.stop();
-
-}if (x==3){
-    // Scores 1 block on long goal
-  Brain.Screen.print(" - V23");
   Drivetrain.setStopping(hold);
   low.setVelocity(75, percent);
   high.setVelocity(75, percent);
@@ -111,19 +86,54 @@ void autonCodes(int x) {
    Drivetrain.turnToHeading(-135,degrees);
   // Drivetrain.driveFor(-1,inches);
   low.stop();
-    Drivetrain.driveFor(28,inches);
+    Drivetrain.driveFor(12.5,inches);
         wait(0.5, sec);
-  Drivetrain.turnToHeading(90,degrees);
+  
+  low.setVelocity(100, percent);
+  high.setVelocity(100, percent);
+
+    low.spin(forward);
+    wait(3, sec);
+    high.stop();
+    low.stop();
+
+}if (x==3){
+    // Scores 4 block on long goal
+  Brain.Screen.print(" - V26");
+  Controller.Screen.print(" - V26");
+
+  Drivetrain.setStopping(hold);
+  low.setVelocity(75, percent);
+  high.setVelocity(75, percent);
+  Drivetrain.setTurnVelocity(8, percent);
+  Drivetrain.setTurnConstant(0.6);
+  Drivetrain.setTurnThreshold(1);
+
+  Drivetrain.driveFor(8,inches);
+  Drivetrain.turnToHeading(-90,degrees);
+  low.spin(reverse);
+   //Make turns
+   Drivetrain.setDriveVelocity(10, percent);
+   Drivetrain.driveFor(31.5,inches);
+   Drivetrain.turnToHeading(-135,degrees);
+  // Drivetrain.driveFor(-1,inches);
+  low.stop();
+    Drivetrain.driveFor(-40.8,inches);
+    wait(0.5, sec);
+    Drivetrain.turnToHeading(90,degrees);
 
   low.setVelocity(100, percent);
   high.setVelocity(100, percent);
 
-    Drivetrain.driveFor(-20,inches);
-    wait(1, sec);
-    wait(0.5, sec);
+    Drivetrain.driveFor(-10.5,inches);
+    Drivetrain.turnToHeading(90,degrees);
+        Drivetrain.driveFor(-7.5,inches);
+
+    wait(0.75, sec);
+    Drivetrain.turnToHeading(90,degrees);
 
     high.spin(forward);
-    low.spin(forward);
+    low.spin(reverse);
     wait(3, sec);
     high.stop();
     low.stop();
@@ -151,12 +161,59 @@ void autonCodes(int x) {
    wait(5, sec);
    high.stop();
    low.stop();
+}if (x==5){
+    Brain.Screen.print(" - V23");
+  Drivetrain.setStopping(hold);
+  low.setVelocity(75, percent);
+  high.setVelocity(75, percent);
+  Drivetrain.setTurnVelocity(8, percent);
+  Drivetrain.setTurnConstant(0.6);
+  Drivetrain.setTurnThreshold(1);
+
+  Drivetrain.driveFor(8,inches);
+  Drivetrain.turnToHeading(90,degrees);
+  low.spin(reverse);
+   //Make turns
+   Drivetrain.setDriveVelocity(10, percent);
+   Drivetrain.driveFor(31.5,inches);
+   Drivetrain.turnToHeading(90,degrees);
+  // Drivetrain.driveFor(-1,inches);
+
+  low.stop();
+  low.setVelocity(100, percent);
+  high.setVelocity(100, percent);
+  Drivetrain.turnToHeading(-45,degrees);
+  wait(1, sec);
+  Drivetrain.setDriveVelocity(10, percent);
+  
+   Drivetrain.driveFor(-14.5,inches);
+   wait(0.5, sec);
+  
+   high.spin(reverse);
+   low.spin(reverse);
+   wait(8, sec);
+   high.stop();
+   low.stop();
+    
+  Drivetrain.driveFor(14.5,inches);
+
+  Drivetrain.turnToHeading(90,degrees);
+
+  Drivetrain.driveFor(-15,inches);
+
+  Drivetrain.turnToHeading(0,degrees);
+
+  Drivetrain.driveFor(-16,inches);
+
+  Drivetrain.turnToHeading(90,degrees);
+
+  Drivetrain.driveFor(-30,inches);
+
 }
 }
 
 // Pre-Autonomous
 void pre_auton(void) {
-  Descore.set(true);
   vexcodeInit();
   InertialSensor.calibrate();  // Start calibration. Print that the Inertial Sensor is calibrating
   low.setVelocity(600, rpm); 
@@ -170,7 +227,8 @@ void pre_auton(void) {
 
 void autonomous() {
   Drivetrain.setStopping(hold);
-  autonCodes(3);
+    Descore.set(true);
+  autonCodes(5);
 }
  
 bool stateLoader=false;
