@@ -251,7 +251,7 @@ void pre_auton(void) {
 void autonomous() {
   Drivetrain.setStopping(hold);
   Descore.set(false);
-  autonCodes(5);
+  autonCodes(7);
 }
 
 bool stateLoader=false;
