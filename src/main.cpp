@@ -77,17 +77,18 @@ void autonCodes(int x) {
   Drivetrain.setTurnConstant(0.6);
   Drivetrain.setTurnThreshold(1);
 
+
   Drivetrain.driveFor(8,inches);
+  //Make turns
   Drivetrain.turnToHeading(-90,degrees);
   low.spin(reverse);
-   //Make turns
    Drivetrain.setDriveVelocity(10, percent);
    Drivetrain.driveFor(31.5,inches);
    Drivetrain.turnToHeading(-135,degrees);
-  // Drivetrain.driveFor(-1,inches);
-  low.stop();
-    Drivetrain.driveFor(12.5,inches);
-        wait(0.5, sec);
+
+   low.stop();
+   Drivetrain.driveFor(12.5,inches);
+   wait(0.5, sec);
   
   low.setVelocity(100, percent);
   high.setVelocity(100, percent);
@@ -209,7 +210,7 @@ void autonCodes(int x) {
 
   Drivetrain.turnToHeading(-90,degrees);
 
-   Drivetrain.setDriveVelocity(20, percent);
+   Drivetrain.setDriveVelocity(40, percent);
 
     Drivetrain.driveFor(35,inches);
   wait(1, seconds);
@@ -218,13 +219,24 @@ void autonCodes(int x) {
 
   Drivetrain.driveFor(5,inches);
 
-
-
+} if (x==6){
+  // Park Go
+  Drivetrain.setDriveVelocity(30, percent);
+   Drivetrain.driveFor(5,inches);
+   Drivetrain.setDriveVelocity(20, percent);
+   wait(1, sec);
+   Drivetrain.driveFor(-22,inches);
+   wait(1, sec);
+   Drivetrain.driveFor(-10,inches);
+} if (x==7){
+  // MiniGo
+  Drivetrain.driveFor(6,inches);
 }
 }
 
 // Pre-Autonomous
 void pre_auton(void) {
+
   vexcodeInit();
   InertialSensor.calibrate();  // Start calibration. Print that the Inertial Sensor is calibrating
   low.setVelocity(600, rpm); 
@@ -238,10 +250,10 @@ void pre_auton(void) {
 
 void autonomous() {
   Drivetrain.setStopping(hold);
-    Descore.set(true);
-  autonCodes(2);
+  Descore.set(false);
+  autonCodes(5);
 }
- 
+
 bool stateLoader=false;
 bool stateDescore=true;
  
