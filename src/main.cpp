@@ -45,7 +45,7 @@ void autonCodes(int x) {
   low.spin(reverse);
    //Make turns
    Drivetrain.setDriveVelocity(10, percent);
-   Drivetrain.driveFor(31.5,inches);
+   Drivetrain.driveFor(30,inches);
    Drivetrain.turnToHeading(90,degrees);
   // Drivetrain.driveFor(-1,inches);
 
@@ -217,7 +217,7 @@ void autonCodes(int x) {
   
     Drivetrain.setDriveVelocity(10, percent);
 
-  Drivetrain.driveFor(5,inches);
+  Drivetrain.driveFor(-5,inches);
 
 } if (x==6){
   // Park Go
@@ -251,7 +251,7 @@ void pre_auton(void) {
 void autonomous() {
   Drivetrain.setStopping(hold);
   Descore.set(false);
-  autonCodes(7);
+  autonCodes(5);
 }
 
 bool stateLoader=false;
