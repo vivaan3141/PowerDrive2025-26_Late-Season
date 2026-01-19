@@ -16,6 +16,10 @@
 using namespace vex;
 competition Competition;
 
+double batteryPercent(){
+  return ("Battery Capacity: %0.0f%%", Brain.Battery.capacity(percentUnits::pct));
+}
+
 int readPort(){
     std::ifstream f("vex_project_settings.json");
     if (!f.is_open()) return -1;
@@ -52,14 +56,21 @@ void changeName(std::string new_name) {
   
 // Pre-Autonomous
 void pre_auton(void) {
-  vexcodeInit();
-  InertialSensor.calibrate();  
   low.setVelocity(600, rpm); 
   high.setVelocity(600, rpm);
-  while(InertialSensor.isCalibrating()){
-    Brain.Screen.print("Inertial Calibrating"); wait(5, sec);
-  }
-  Brain.Screen.print("Inertial Calibrated!"); wait(5, sec);
+  InertialSensor.calibrate();
+  while (InertialSensor.isCalibrating()==true) {
+    task::sleep(100);
+    std::cout<<"Calibrating";
+    Brain.Screen.print("Inertial Calibrating.."); 
+    Controller.Screen.print("Inertial Calibrating.."); 
+    wait(5, sec);
+}  
+Brain.Screen.clearLine();
+Controller.Screen.clearLine();
+
+Brain.Screen.print("Calibrated!"); 
+Controller.Screen.print("Calibrated!"); 
 }
 
 void autonomous() {

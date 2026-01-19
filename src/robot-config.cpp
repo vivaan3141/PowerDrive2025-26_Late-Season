@@ -31,12 +31,3 @@ vex::digital_out Descore (Brain.ThreeWirePort.A);
 
 // distance gap = distance(PORT2); // Change the port!
 
-void vexcodeInit() {
-  InertialSensor.calibrate();
-  // DoubleActingPiston.set(false); // retracted
-  // SingleActingPiston.set(false); // off
-  while (InertialSensor.isCalibrating()==true) {
-    task::sleep(100);
-    std::cout<<"Calibrating";
-  }
-}
