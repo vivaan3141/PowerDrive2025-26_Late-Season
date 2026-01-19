@@ -114,21 +114,23 @@ void autonCodes(int x) {
   Drivetrain.turnToHeading(-90,degrees);
   low.spin(reverse);
    //Make turns
-   Drivetrain.setDriveVelocity(10, percent);
-   Drivetrain.driveFor(31.5,inches);
+   Drivetrain.setDriveVelocity(29, percent);
+   Drivetrain.driveFor(32,inches);
+  Drivetrain.driveFor(-1,inches);
    Drivetrain.turnToHeading(-135,degrees);
   // Drivetrain.driveFor(-1,inches);
   low.stop();
-    Drivetrain.driveFor(-40.8,inches);
+    Drivetrain.driveFor(-40.5,inches);
     wait(0.5, sec);
     Drivetrain.turnToHeading(90,degrees);
 
   low.setVelocity(100, percent);
   high.setVelocity(100, percent);
+   Drivetrain.setDriveVelocity(25, percent);
 
     Drivetrain.driveFor(-10.5,inches);
     Drivetrain.turnToHeading(90,degrees);
-        Drivetrain.driveFor(-7.5,inches);
+        Drivetrain.driveFor(-7.2,inches);
 
     wait(0.75, sec);
     Drivetrain.turnToHeading(90,degrees);
@@ -195,7 +197,7 @@ void autonCodes(int x) {
    wait(8, sec);
    high.stop();
    low.stop();
-    
+        Controller.Screen.print(" Stage 2");
   Drivetrain.driveFor(14.5,inches);
 
   Drivetrain.turnToHeading(90,degrees);
@@ -206,28 +208,36 @@ void autonCodes(int x) {
 
   Drivetrain.turnToHeading(0,degrees);
 
-  Drivetrain.driveFor(-25,inches);
+  Drivetrain.driveFor(-4,inches); ///2
 
-  Drivetrain.turnToHeading(-90,degrees);
+  Drivetrain.turnToHeading(45,degrees);
 
-   Drivetrain.setDriveVelocity(40, percent);
+   Drivetrain.setDriveVelocity (40, percent);
 
-    Drivetrain.driveFor(35,inches);
+    Drivetrain.driveFor(-30,inches);
   wait(1, seconds);
-  
-    Drivetrain.setDriveVelocity(10, percent);
+    Drivetrain.turnToHeading(90,degrees);
 
-  Drivetrain.driveFor(-5,inches);
+    Drivetrain.setDriveVelocity(20, percent);
+
+  Drivetrain.driveFor(-10,inches);
 
 } if (x==6){
   // Park Go
   Drivetrain.setDriveVelocity(30, percent);
+
    Drivetrain.driveFor(5,inches);
-   Drivetrain.setDriveVelocity(20, percent);
+   Drivetrain.setDriveVelocity(25, percent);
+
    wait(1, sec);
    Drivetrain.driveFor(-22,inches);
    wait(1, sec);
-   Drivetrain.driveFor(-10,inches);
+   Drivetrain.driveFor(-15,inches);
+
+    Drivetrain.turnToHeading(-45,degrees);
+   Drivetrain.driveFor(-1,inches);
+
+
 } if (x==7){
   // MiniGo
   Drivetrain.driveFor(6,inches);
@@ -251,7 +261,7 @@ void pre_auton(void) {
 void autonomous() {
   Drivetrain.setStopping(hold);
   Descore.set(false);
-  autonCodes(5);
+  autonCodes(3);
 }
 
 bool stateLoader=false;
