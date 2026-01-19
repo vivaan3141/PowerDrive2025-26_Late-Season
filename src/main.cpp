@@ -3,24 +3,77 @@
 /*    Created:      5/27/2025, 10:30:19 PM                 */
 // January 10. Autonomous change for Jan 10
 #include "vex.h"
+#include "controls.h"
+
 #include "robot-config.h"
 #include "functions.h"
+
+
+#include <fstream>   
+#include <sstream>   
 
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <iomanip>
 
+#include "picojson.h"
+
 using namespace vex;
 competition Competition;
 
 
-// void setSpeedAuton(){
-//     Loader.set(false);
-//     Descore.set(false);
-//     low.setVelocity(150, rpm);
-//     high.setVelocity(200, rpm);
-// }
+int readPort() {
+    // 1. Open the file shown in your screenshot
+    std::ifstream f("vex_project_settings.json");
+    if (!f.is_open()) return -1;
+
+    std::stringstream buffer;
+    buffer << f.rdbuf();
+    std::string json_str = buffer.str();
+
+    picojson::value v;
+    std::string err = picojson::parse(v, json_str);
+    if (!err.empty()) return -1;
+
+    picojson::object& root = v.get<picojson::object>();
+    picojson::object& project = root["project"].get<picojson::object>();
+
+    return (int)project["port"].get<double>();
+}
+
+void changeName(std::string new_name) {
+    const std::string filename = "vex_project_settings.json";
+
+    // 1. READ THE FILE
+    std::ifstream inFile(filename);
+    if (!inFile.is_open()) {
+        // If file doesn't exist, we can't edit it
+        return;
+    }
+
+    std::stringstream buffer;
+    buffer << inFile.rdbuf();
+    std::string content = buffer.str();
+    inFile.close(); // Close after reading
+
+    picojson::value v;
+    std::string err = picojson::parse(v, content);
+    if (!err.empty()) return;
+
+    // 3. EDIT THE OBJECT
+    if (v.is<picojson::object>()) {
+        picojson::object& root = v.get<picojson::object>();
+        
+        // Navigate to the "project" object
+        if (root.count("project") && root["project"].is<picojson::object>()) {
+            picojson::object& project = root["project"].get<picojson::object>();
+            
+            // Update the name
+            project["name"] = picojson::value(new_name);
+        }
+    }
+  }
 
 void loadLoop(int loop, double dist, double time){
   for (int i=0; i<loop; i++){
@@ -259,150 +312,18 @@ void pre_auton(void) {
 // USER CONTROLS
 
 void autonomous() {
+  if (readPort()==1){
+    std::cout<<"hi";
+  }else if (readPort()==2){
+    changeName("Low Goal");
+    std::cout<<"bye";
+  }
   Drivetrain.setStopping(hold);
   Descore.set(false);
   autonCodes(3);
 }
 
-bool stateLoader=false;
-bool stateDescore=true;
- 
-void reverseIntake(){
-  low.spin(forward);
-  high.stop();
-}
 
-void middleGoal(){
-  low.spin(reverse);
-  high.spin(reverse);
-  Controller.Screen.print("Middle Goal");
-}
-
-void intake(){
-  low.spin(reverse);
-  high.stop();
-  Controller.Screen.print("Intake");
-}
-
-void longGoal(){
-  Controller.Screen.clearLine();
-  high.spin(forward); // Score long, moves all stages
-  low.spin(reverse);
-  Controller.Screen.print("LONG GOAL");
-}
-void loadOut(){
-  Controller.Screen.clearLine();
-
-  Controller.Screen.print("Loading"); 
-  Loader.set(true);
-}
-
-void loadRest(){
-  Controller.Screen.clearLine();
-  Loader.set(false);
-}
-
-void descoreOut(){
-  Controller.Screen.clearLine();
-  Descore.set(true);
-}
-
-void descoreIn(){
-  Controller.Screen.clearLine();
-  Descore.set(false);
-}
-void reverseIntakeRELEASED(){
-  Controller.Screen.clearLine();
-
-  low.stop();
-  high.stop();
-}
-
-void middleGoalRELEASED(){
-  Controller.Screen.clearLine();
-  low.stop();
-  high.stop();
-}
-
-void longGoalRELEASED(){
-  Controller.Screen.clearLine();
-
-  high.stop();
-  low.stop();
-}
-
-void intakeRELEASED(){
-  Controller.Screen.clearLine();
-
-  high.stop();
-  low.stop();
-}
-
-
-void load(){
-  if (stateLoader==true){
-    loadOut();
-    stateLoader=false; // Happy :)
-  }else {
-    loadRest();
-    stateLoader=true;
-  }
-}
-
-void descore(){
-  if (stateDescore==true){
-    descoreOut();
-    stateDescore=false; // Happy :)
-  }else {
-    descoreIn();
-    stateDescore=true;
-  }
-}
-
-void descoreTest(){
-  Descore.set(true);
-  wait(1,sec);
-    Descore.set(false);
-}
-
-
-void usercontrol(void) {
-  high.setVelocity(600, rpm);
-  low.setVelocity(600, rpm);
-
-
-  Controller.ButtonR1.pressed(middleGoal);
-  Controller.ButtonR1.released(middleGoalRELEASED);
-
-  Controller.ButtonR2.pressed(longGoal);
-  Controller.ButtonR2.released(longGoalRELEASED);
-
-  Controller.ButtonL2.pressed(intake);
-  Controller.ButtonL2.released(intakeRELEASED);
-
-  Controller.ButtonA.pressed(reverseIntake);
-  Controller.ButtonA.released(reverseIntakeRELEASED);
-  // Pneumatics
-  // Controller.ButtonUp.pressed(load);
-  Controller.ButtonY.pressed(descore);
-
-  while (true) {
-    // ========== DRIVE CONTROL ========== //
-    Drivetrain.setStopping(coast);
-
-    double fwd = Controller.Axis3.position();
-    double turn = Controller.Axis1.position();
-
-    double leftPower  = fwd + turn;
-    double rightPower = fwd - turn;
-
-    spinLeftDT(leftPower * 1);
-    spinRightDT(rightPower * 1);
-  
-    wait(20, msec);
-  }
-
-}
 int main(){
   pre_auton();
   Competition.autonomous(autonomous);
