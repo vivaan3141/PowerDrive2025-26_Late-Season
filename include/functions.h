@@ -10,5 +10,9 @@ void spinLeftDT(double velocity);
 
 void spinDTPosition(double velocity, double targetInches);
 void turnForTime(double velocity, double time);
+// int readPort();
+// void changeName(std::string new_name);
+double batteryPercent();
+
 
 #endif //end of define

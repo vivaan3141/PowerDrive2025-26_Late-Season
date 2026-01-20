@@ -6,6 +6,7 @@
 #include "robot-config.h"
 #include "functions.h"
 #include "picojson.h"
+
 #include <fstream>   
 #include <sstream>   
 #include <iostream>
@@ -14,11 +15,32 @@
 #include <iomanip>
 
 using namespace vex;
+using namespace std;
 competition Competition;
 
-double batteryPercent(){
-  return ("Battery Capacity: %0.0f%%", Brain.Battery.capacity(percentUnits::pct));
-}
+void changeName(std::string new_name) {  
+    const std::string filename = "vex_project_settings.json";
+    std::ifstream inFile(filename);
+    if (!inFile.is_open()) { 
+      return;
+    }
+    std::stringstream buffer;
+    buffer << inFile.rdbuf();
+    std::string content = buffer.str();
+    inFile.close(); // Close after reading
+    picojson::value v;
+    std::string err = picojson::parse(v, content);
+    if (!err.empty()) {
+      return;  
+    }
+    if (v.is<picojson::object>()) {
+        picojson::object& root = v.get<picojson::object>();
+        if (root.count("project") && root["project"].is<picojson::object>()) {
+            picojson::object& project = root["project"].get<picojson::object>();
+            project["name"] = picojson::value(new_name);
+        }
+    }
+  }
 
 int readPort(){
     std::ifstream f("vex_project_settings.json");
@@ -34,26 +56,6 @@ int readPort(){
     return (int)project["port"].get<double>();
 }
 
-void changeName(std::string new_name) {
-    const std::string filename = "vex_project_settings.json";
-    std::ifstream inFile(filename);
-    if (!inFile.is_open()) { return;}
-    std::stringstream buffer;
-    buffer << inFile.rdbuf();
-    std::string content = buffer.str();
-    inFile.close(); // Close after reading
-    picojson::value v;
-    std::string err = picojson::parse(v, content);
-    if (!err.empty()) return;
-    if (v.is<picojson::object>()) {
-        picojson::object& root = v.get<picojson::object>();
-        if (root.count("project") && root["project"].is<picojson::object>()) {
-            picojson::object& project = root["project"].get<picojson::object>();
-            project["name"] = picojson::value(new_name);
-        }
-    }
-  }
-  
 // Pre-Autonomous
 void pre_auton(void) {
   low.setVelocity(600, rpm); 
@@ -66,11 +68,8 @@ void pre_auton(void) {
     Controller.Screen.print("Inertial Calibrating.."); 
     wait(5, sec);
 }  
-Brain.Screen.clearLine();
-Controller.Screen.clearLine();
-
-Brain.Screen.print("Calibrated!"); 
-Controller.Screen.print("Calibrated!"); 
+Brain.Screen.clearLine(); Controller.Screen.clearLine(); 
+Brain.Screen.print("Calibrated!"); Controller.Screen.print("Calibrated!"); 
 }
 
 void autonomous() {
@@ -89,7 +88,5 @@ int main(){
   pre_auton();
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
-  while (true) {
-    wait(100, msec);
-  }
+  while (true) { wait(100, msec); }
 }

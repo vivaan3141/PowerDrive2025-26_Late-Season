@@ -1,9 +1,14 @@
-#include "robot-config.h"
 #include "vex.h"
-
+#include "controls.h"
+#include "autons.h"
+#include "robot-config.h"
+#include "functions.h"
+#include "picojson.h"
+#include <fstream>   
+#include <sstream>   
 #include <iostream>
 #include <string>
-#include <cmath>
+#include <cmath> 
 #include <iomanip>
 
 using namespace vex;
@@ -69,6 +74,12 @@ void turnForTime(double velocity, double time) {
     wait(time, msec);
     stopDT();
 }
+
+
+
+double batteryPercent(){ return ("Battery Capacity: %0.0f%%", Brain.Battery.capacity(percentUnits::pct)); }
+
+  
 
 // double distance(){ return gap.objectDistance(inches); }
 
